@@ -1,0 +1,206 @@
+/*
+Write a generic class GenericList<T> that keeps a list of elements of some parametric type T. 
+Keep the elements of the list in an array with fixed capacity which is given as parameter in the class constructor. 
+Implement methods for adding element, accessing element by index, removing element by index, inserting element at given position, 
+clearing the list, finding element by its value and ToString(). Check all input parameters to avoid accessing elements at invalid 
+positions.
+Implement auto-grow functionality: when the internal array is full, create a new array of double size and move all elements to it.
+Create generic methods Min<T>() and Max<T>() for finding the minimal and maximal element in the  GenericList<T>. You may need to add 
+a generic constraints for the type T.
+*/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GenericList
+{
+    class GenericList<T> where T : IComparable<T>
+    {
+        private T[] genericList;
+        private uint capacity;
+        private uint count = 0;
+
+        public GenericList(uint capacity)
+        {
+            this.capacity = capacity;
+            this.genericList = new T[this.capacity];
+        }
+
+        public uint Capacity
+        {
+            get { return this.capacity; }
+        }
+
+        public uint Count
+        {
+            get { return this.count; }
+        }
+   
+        private void DoubleCapacity(T[] oldList)
+        {
+            this.capacity = 2 * this.capacity;
+            this.genericList = new T[this.capacity];
+
+            for (int i = 0; i < this.count; i++)
+            {
+                this.genericList[i] = oldList[i];
+            }
+        }
+
+        public void Add(T newElement)
+        {
+            if (this.count < this.capacity)
+            {
+                this.genericList[this.count] = newElement;
+                this.count++;
+            }
+            else
+            {
+                DoubleCapacity(this.genericList);
+                Add(newElement);
+            }
+        }
+
+        public T TakeElement(uint index)
+        {
+            if (index < this.count)
+            {
+                return genericList[index];
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("The index is out of range!");
+            }
+        }
+
+        public void RemoveElement(uint index)
+        {
+            if (index < this.count)
+            {
+                if (!(index == this.count - 1))
+                {
+                    for (uint i = index; i < this.count; i++)
+                    {
+                        this.genericList[i] = this.genericList[i + 1];
+                    }
+                }
+                this.count--;
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("The index is out of range!");
+            }
+        }
+
+        public void Insert(T newElement, uint index)
+        {
+            if (index < this.count)
+            {
+                if (this.count < this.capacity)
+                {
+                    for (uint i = this.count; i > index; i--)
+                    {
+                        this.genericList[i] = this.genericList[i - 1];
+                    }
+                    this.genericList[index] = newElement;
+                    this.count++;
+                }
+                else
+                {
+                    DoubleCapacity(this.genericList);
+                    Insert(newElement, index);
+                }
+            }
+            else
+            {
+                throw new IndexOutOfRangeException("The index is out of range!");
+            }
+        }
+
+        public void Clear()
+        {
+            this.genericList = new T[this.capacity];
+            count = 0;
+        }
+
+        public int FindElement(T element)
+        {
+            for (int i = 0; i < this.count; i++)
+            {
+                if (this.genericList[i].CompareTo(element) == 0)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < this.count; i++)
+            {
+                sb.Append(genericList[i]);
+                sb.Append(", ");
+            }
+            return sb.ToString();
+        }
+
+        public T Min<T>()
+        {
+            dynamic min = this.genericList[0];
+            for (int i = 1; i < this.count; i++)
+            {
+                if (min.CompareTo(genericList[i]) > 0)
+                {
+                    min = genericList[i];
+                }
+            }
+            return min;
+        }
+
+        public T Max<T>()
+        {
+            dynamic max = this.genericList[0];
+            for (int i = 1; i < this.count; i++)
+            {
+                if (max.CompareTo(genericList[i]) < 0)
+                {
+                    max = genericList[i];
+                }
+            }
+            return max;
+        }
+    }
+    class Program
+    {
+        static void Main()
+        {
+            GenericList<int> list = new GenericList<int>(3);
+            GenericList<string> name = new GenericList<string>(3);
+            name.Add("Pesho");
+            name.Add("Miro");
+            name.Add("Ivo");
+            Console.WriteLine("All entered names are : {0}", name);
+            Console.WriteLine("The name with min length is: {0}",name.Min<string>());
+
+            list.Add(1);
+            list.Add(2);
+            list.Add(3);
+            list.Insert(10,2);
+            list.Add(5);
+            list.Add(-12);
+            Console.WriteLine("The second element in the list is: {0}", list);
+            Console.WriteLine("The element 10 is on {0} position.", list.FindElement(10));
+            Console.WriteLine();
+
+            Console.WriteLine("Min value: {0}", list.Min<int>());
+            Console.WriteLine("Max value: {0}", list.Max<int>());
+            Console.WriteLine("Count: {0}", list.Count);
+            Console.WriteLine("Capacity: {0}", list.Capacity);
+        }
+    }
+}
