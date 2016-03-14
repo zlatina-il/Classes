@@ -1,0 +1,46 @@
+/*
+Define a class that holds information about a mobile phone device: model, manufacturer, price, owner, battery characteristics 
+(model, hours idle and hours talk) and display characteristics (size and number of colors). Define 3 separate classes 
+(class GSM holding instances of the classes Battery and Display).
+*/
+using System;
+
+public class Battery
+{
+    private string batteryModel;
+    private byte hoursIdle;
+    private byte hoursTalk;
+    private BatteryType? batteryType;
+
+    public Battery(string batteryModel, byte hoursIdle, byte hoursTalk, BatteryType? batteryType)
+    {
+        this.batteryModel = batteryModel;
+        this.hoursIdle = hoursIdle;
+        this.hoursTalk = hoursTalk;
+        this.BatteryType = batteryType;
+    }
+
+    public string Model
+    {
+        get { return this.batteryModel; }
+        set { this.batteryModel = value; }
+    }
+
+    public byte HoursIdle
+    {
+        get { return this.hoursIdle; }
+        set { this.hoursIdle = value; }
+    }
+
+    public byte HoursTalk
+    {
+        get { return this.hoursTalk; }
+        set { this.hoursTalk = value; }
+    }
+
+    public BatteryType? BatteryType
+    {
+        get { return this.batteryType; }
+        set { this.batteryType = value; }
+    }
+}
