@@ -1,0 +1,50 @@
+/*
+Create a [Version] attribute that can be applied to structures, classes, interfaces, enumerations and methods and holds a version in 
+the format major.minor (e.g. 2.11). Apply the version attribute to a sample class and display its version at runtime.
+*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Atribute
+{
+    [AttributeUsage(
+        AttributeTargets.Struct |
+        AttributeTargets.Class |
+        AttributeTargets.Interface |
+        AttributeTargets.Enum |
+        AttributeTargets.Method)]
+
+    class VersionAttribute:Attribute
+    {
+        public string Version { get; set; }
+
+        public VersionAttribute(string version)
+        {
+            this.Version = version;
+        }
+
+    }
+    
+    [Version("2.11")]
+    public class Something
+    {
+    }
+
+    public class VersionDemo
+    {
+        static void Main()
+        {
+            Type type = typeof(Something);
+            foreach (var attr in type.GetCustomAttributes(false))
+            {
+                if (attr is VersionAttribute)
+                {
+                    Console.WriteLine("This is version {0} of the {1} class.", (attr as VersionAttribute).Version, typeof(Something).FullName);
+                }
+            }
+        }
+    }
+}
