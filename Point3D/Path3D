@@ -26,4 +26,35 @@ namespace Point
         }
 
     }
+    public static class PathStorage
+    {
+        public static void SavePath(Path3D path)
+        {
+            using (StreamWriter sw = new StreamWriter("@../../../../Saved.txt"))
+            {
+                foreach (var i in path.Paths)
+                {
+                    sw.WriteLine(String.Format("({0},{1},{2})", i.X, i.Y, i.Z));
+                }
+            }
+        }
+
+        public static Path3D LoadPath()
+        {
+            Path3D loaded = new Path3D();
+
+            using (StreamReader sr = new StreamReader("@../../../../Loaded.txt"))
+            {
+                string line = sr.ReadLine();
+                while (line != null)
+                {
+                    string[] coord = line.Split(new char[] { ' ', ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    Point3D point = new Point3D(int.Parse(coord[0]), int.Parse(coord[1]), int.Parse(coord[2]));
+                    loaded.AddPoints(point);
+                    line = sr.ReadLine();
+                }
+            }
+            return loaded;
+        }
+    }
 }
