@@ -1,0 +1,40 @@
+using System;
+
+public class Call
+{
+    private DateTime dateTime;
+    private string dialedNumber;
+    private uint duration;
+
+    public Call(DateTime dateTime, string dialedNumber, uint duration)
+    {
+        this.Date = dateTime.Date.ToShortDateString();
+        this.Time = dateTime.TimeOfDay.ToString();
+        this.dialedNumber = dialedNumber;
+        this.duration = duration;
+    }
+
+    public string Date
+    {
+        get { return this.dateTime.Date.ToShortDateString(); }
+        set { this.dateTime = DateTime.Parse(value); }
+    }
+
+    public string Time
+    {
+        get { return this.dateTime.ToLongTimeString();}
+        set { this.dateTime = DateTime.Parse(value); }
+    }
+
+    public string DialedNumber
+    {
+        get { return this.dialedNumber; }
+        set { this.dialedNumber = value; }
+    }
+
+    public uint Duration
+    {
+        get { return this.duration; }
+        set { this.duration = value; }
+    }
+}
