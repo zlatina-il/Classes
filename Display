@@ -1,0 +1,25 @@
+using System;
+
+public class Display
+{
+    private byte size;
+    private ushort numberOfColors;
+
+    public Display(byte size, ushort numberOfColors)
+    {
+        this.size = size;
+        this.numberOfColors = numberOfColors;
+    }
+
+    public byte Size
+    {
+        get { return this.size; }
+        set { this.size = value; }
+    }
+
+    public ushort NumberOfColors
+    {
+        get { return this.numberOfColors; }
+        set { this.numberOfColors = value; }
+    }
+}
