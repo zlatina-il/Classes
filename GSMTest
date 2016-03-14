@@ -1,0 +1,19 @@
+using System;
+
+class GSMTest
+{
+    static void Main()
+    {
+        GSM[] devices = new GSM[3]
+            {
+                new GSM("Galaxy Duos", "Samsung"),
+                new GSM("iPhone", "Apple", 199),
+                new GSM("1210", "Nokia", 80, "Bai Pesho", "nokia-36447", BatteryType.LiIon, 30, 3)
+            };
+            
+        foreach (GSM device in devices)
+        {
+            Console.WriteLine("{0}",device);
+        }
+    }
+}
