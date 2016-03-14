@@ -1,0 +1,40 @@
+using System;
+using System.Linq;
+
+class GsmCallHistoryTest
+{
+    static void Main(string[] args)
+    {
+        GSM gsm = new GSM("Galaxy Note 2", "Samsung");
+
+        gsm.AddCall(DateTime.Now, "0882497876", 30);
+        gsm.AddCall(DateTime.Now, "0883222233", 115);
+        gsm.AddCall(DateTime.Now, "0883222222", 30);
+        gsm.AddCall(DateTime.Now, "0858227774", 60);
+ 
+        foreach (var call in gsm.CallHistory)
+        {
+            Console.WriteLine("Date:{0}\n Time:{1}\n Phone Number:{2}\n Duration:{3}s\n", call.Date, call.Time, call.DialedNumber, call.Duration);
+        }
+
+        Console.WriteLine(gsm.TotalCallPrice(0.37M));
+        RemoveLongestCall(gsm);
+
+        Console.WriteLine(gsm.TotalCallPrice(0.37M));
+        Console.WriteLine();
+
+        foreach (var call in gsm.CallHistory)
+        {
+            Console.WriteLine("Date:{0}\n Time:{1}\n Phone Number:{2}\n Duration:{3}s\n", call.Date, call.Time, call.DialedNumber, call.Duration);
+        }
+        gsm.ClearCallHistory();
+    }
+
+    static void RemoveLongestCall(GSM gsm)
+    {
+        Call[] calls = gsm.CallHistory.ToArray();
+        Array.Sort(calls, (x, y) => x.Duration.CompareTo(y.Duration));                         
+        gsm.CallHistory = calls.ToList();
+        gsm.CallHistory.RemoveAt(gsm.CallHistory.Count - 1);
+    }
+}
